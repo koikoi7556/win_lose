@@ -11,3 +11,6 @@ local.py
 
 # ignore media
 media_root/
+
+# windows bash scripts
+*.bat
