@@ -1,0 +1,13 @@
+__pycashe__/
+*.py[cod]
+.env
+.venv/
+.ipynb_checkpoints
+db.sqlite3
+local.py
+
+# setting vscode
+.vscode/
+
+# ignore media
+media_root/
