@@ -17,7 +17,7 @@ index = IndexView.as_view()
 
 class ResultView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'janken/result.html')
+        return render(request, 'janken/index.html')
 
     
 result = ResultView.as_view()

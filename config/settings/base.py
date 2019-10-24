@@ -39,6 +39,9 @@ INSTALLED_APPS = [
 
     # My app
     'janken.apps.JankenConfig',
+
+    # humanizeという時間をわかりやすく表示するApp
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

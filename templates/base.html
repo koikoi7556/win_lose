@@ -7,17 +7,45 @@
   <title>{% block title %}{% endblock title %}</title>
 
   <!-- css -->
-  <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css }%'">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'janken/styles.css' %}">
   {% block extra_css %}{% endblock extra_css %}
-    
+  <style>
+    .cover {
+      background: url('/static/images/background.jpg');
+      background-size: cover;
+    }
+  </style>
+
 </head>
 <body>
+  <header>
+    <div class="container ">
+      <nav class="navbar navbar-light">
+        <a href="{% url 'janken:index' %}" class="navbar-brand text-hack">Janken Similation</a>
+      </nav>
+    </div>
+    <div class="text-center py-5 cover">
+      <div class="container">
+        {% block comment %}{% endblock comment %}
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      {% block content %}{% endblock content %}
+    </div>
+  </main>
+  <footer>
+    <div class="text-center mt-4">
+      <a href="https://twitter.com/koikoi_jam" class="text-decoration-none">@koikoi_jam</a>
+    </div>
+  </footer>
 
-{% block content %}{% endblock content %}
-
-<!-- js -->
-<script src="{% static 'vendor/bootstrap/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-{% block extra_js %}{% endblock extra_js %}
+  <!-- js -->
+  <script src="https://kit.fontawesome.com/d2bf980683.js"></script>
+  <script src="{% static 'vendor/bootstrap/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  {% block extra_js %}{% endblock extra_js %}
 </body>
 </html>
