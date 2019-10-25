@@ -15,3 +15,17 @@ class Match(models.Model):
 
     def __str__(self):
         return '{}_{}'.format(self.user, self.match_time)
+
+class Comment(models.Model):
+    """
+    勝ち負け時の画像とコメントを保存するモデル
+    """
+    user = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+    image_link = models.TextField(verbose_name='画像リンク', max_length=200)
+    comment = models.TextField(verbose_name='コメント', max_length=1000)
+    result = models.IntegerField(verbose_name='表示する場合の結果')
+    createde_date = models.DateField(default=timezone.now)
+
+    def __str__():
+        return comment[:10]
+
