@@ -31,10 +31,10 @@ Result_Janken
 {% endif %}
 <div class="d-flex justify-content-center align-items-end">
   <button type="button" class="fas fa-hand-{{opponent_hand}} btn btn-outline-dark fa-3x active "></button>
-  <i class="fas fa-smile fa-8x ml-3"></i>
+  <img src="{{match.response.image_link}}" class="img-box rounded">
 </div>
-<div class="comment-box">
-  <p>たかがじゃんけんそう思ってないですか</p>
+<div class="comment-box mt-3">
+  {{match.response.text|linebreaksbr}}
 </div>
 
 {% endblock comment %}

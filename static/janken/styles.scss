@@ -41,6 +41,9 @@
     border-radius: 1rem;
 }
 
+.img-box {
+    max-width: 80%;
+}
 
 // じゃんけんボタンのデザイン
 @mixin janken-button($color) {

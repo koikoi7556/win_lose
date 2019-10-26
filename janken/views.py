@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import View
-from .models import Match
+from .models import Match, Response, Like
 
 logeer = logging.getLogger(__name__)
 
@@ -17,17 +17,6 @@ class IndexView(View):
 
 index = IndexView.as_view()
 
-
-class MatchView(View):
-    def post(self, request, *args, **kwargs):
-        user_hand = int(request.POST.get('user_hand'))
-        result, opponent_hand = janken(user_hand)
-        match = Match(user=request.user, 
-                      user_hand=user_hand, 
-                      opponent_hand=opponent_hand, 
-                      result=result)
-        match.save()
-        return redirect('janken:result', pk=match.pk)
 
 class ResultView(View):
     def get(self, request, pk, *args, **kwargs):
@@ -43,9 +32,31 @@ class ResultView(View):
             opponent_hand == ''
         return render(request, 'janken/result.html',context={'match': match, 'opponent_hand': opponent_hand})
 
-        
+
+result = ResultView.as_view()
+
+
+class MatchView(View):
+    def post(self, request, *args, **kwargs):
+        user_hand = int(request.POST.get('user_hand'))
+        result, opponent_hand = janken(user_hand)
+        # レスポンスを結果からランダム選択
+        response_list = Response.objects.filter(result=result)
+        response = random.choice(response_list)
+        try:
+            match = Match(user=request.user)
+        except ValueError:
+            match = Match()
+        match.response = response
+        match.user_hand = user_hand
+        match.opponent_hand = opponent_hand
+        match.result = result
+        match.save()
+        return redirect('janken:result', pk=match.pk, )
+
+
 def janken(user_hand):
-    """user_handを引数に入れると、(result, opponent_hand)を返す.それぞれの確率は等しい。
+    """user_handを引数に、(result, opponent_hand)を返す.それぞれの確率は等しい。
     
     Parameters
     ----------
@@ -78,9 +89,6 @@ def janken(user_hand):
 
     return result, opponent_hand
         
-
-    
-result = ResultView.as_view()
 
 
 class ProfileView(View):
