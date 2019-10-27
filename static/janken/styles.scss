@@ -42,6 +42,8 @@ h1 {
 .comment-box {
     background-color: rgba(255, 255, 255, 0.767);
     border-radius: 1rem;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    padding: 0.75rem;
 }
 // imgのサイズ指定
 .img-box {
@@ -75,4 +77,12 @@ h1 {
 
 .button-paper {
     @include janken-button(skyblue)
+}
+
+
+@media (min-width: 600px) {
+    // imgのサイズ指定
+    .img-box {
+        max-width: 400px;
+    }
 }

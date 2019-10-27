@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}
+Signup_Janken
+{% endblock title %}
+
+
+{% block comment %}
+<h1>Signup</h1>
+<small>
+  ユーザー登録すると"Response"の作成や"Like", "対戦履歴"が記録されるようになります！<br>
+  "Response"とはじゃんけん後の結果画面のことです。作成するとみんなのじゃんけんのときにでてくるかも！？
+</small>
+{% endblock comment %}
+
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <button type="submit" class="btn btn-primary">ユーザー登録</button>
+</form>
+{% endblock content %}

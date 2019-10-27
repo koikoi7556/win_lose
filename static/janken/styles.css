@@ -54,61 +54,13 @@ h1 {
 .comment-box {
   background-color: rgba(255, 255, 255, 0.767);
   border-radius: 1rem;
+  -webkit-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  padding: 0.75rem;
 }
 
 .img-box {
   max-width: 80%;
-}
-
-.btn-like {
-  display: inline-block;
-  width: 200px;
-  text-align: center;
-  background-color: #ff4a68;
-  border: 2px solid #ff4a68;
-  font-size: 16px;
-  color: #ff4a68;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 10px 24px;
-  border-radius: 4px;
-  position: relative;
-}
-
-.btn-animation-02 span {
-  position: relative;
-  z-index: 1;
-}
-
-.btn-animation-02::before,
-.btn-animation-02::after {
-  content: "";
-  display: block;
-  background-color: #FFF;
-  width: 50%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  -webkit-transition: .2s;
-  transition: .2s;
-}
-
-.btn-animation-02::before {
-  left: 0;
-}
-
-.btn-animation-02::after {
-  right: 0;
-}
-
-.btn-animation-02:hover:before,
-.btn-animation-02:hover:after {
-  width: 0;
-  background-color: #FFF;
-}
-
-.btn-animation-02:hover {
-  color: #FFF;
 }
 
 .response {
@@ -148,5 +100,11 @@ h1 {
 
 .button-paper {
   color: skyblue;
+}
+
+@media (min-width: 600px) {
+  .img-box {
+    max-width: 400px;
+  }
 }
 /*# sourceMappingURL=styles.css.map */

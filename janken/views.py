@@ -32,8 +32,11 @@ class ResultView(View):
             opponent_hand = 'paper'
         else:
             opponent_hand == ''
-        # そのレスポンスをLikeしているか
-        is_like = Like.objects.filter(user=request.user, response=match.response).exists()        
+        # そのレスポンスをLikeしているか, ゲストのときError回避のため分岐
+        if request.user.is_active:        
+            is_like = Like.objects.filter(user=request.user, response=match.response).exists()
+        else: 
+            is_like = False
         return render(request, 'janken/result.html',context={'match': match, 'opponent_hand': opponent_hand, 'is_like': is_like})
 
 
@@ -47,9 +50,9 @@ class MatchView(View):
         # レスポンスを結果からランダム選択
         response_list = Response.objects.filter(result=result)
         response = random.choice(response_list)
-        try:
+        if request.user.is_active:
             match = Match(user=request.user)
-        except ValueError:
+        else:
             match = Match()
         match.response = response
         match.user_hand = user_hand
@@ -265,12 +268,12 @@ class MatchLikeListView(View):
     MatchのLikeリスト表示
     """
     def get(self, request, *args, **kwargs):
-        # responseLikeList = Response.objects.filter(like__user=request.user)
-        # matchLikeList = []
-        # for responseLike in responseLikeList:
-        #     matchLike = Match.objects.get(user=request.user, response=responseLike)
-        #     matchLikeList.append(matchLike)
-        matchLike_list = Match.objects.filter(response__like__user=request.user)
+        responseLikeList = Response.objects.filter(like__user=request.user)
+        matchLike_list = []
+        for responseLike in responseLikeList:
+            matchLike = Match.objects.filter(user=request.user, response=responseLike)[0]
+            matchLike_list.append(matchLike)
+        # matchLike_list = Match.objects.filter(response__like__user=request.user, user=request.user)
         return render(request, 'janken/matchLike_list.html', {'matchLike_list': matchLike_list})
 
 

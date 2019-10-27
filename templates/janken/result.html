@@ -31,10 +31,19 @@ Result_Janken
     <button type="button" class="fas fa-hand-{{opponent_hand}} btn btn-outline-dark fa-3x active "></button>
     <img src="{{match.response.image_link}}" class="img-box rounded">
   </div>
-  <div class="comment-box shadow-sm mt-3 py-1">
+  <div class="comment-box mt-3">
     {{match.response.text|linebreaksbr}}
   </div>
+  
+  {% if user.is_authenticated %}
   <button type="submit" class="btn btn-success mt-2 rounded-pill {% if is_like %}active{% endif %}" id="like">Like {{ match.response.like_num }}</button>
+  {% else %}
+  <button type="button" class="btn btn-success mt-2 rounded-pill disabled">Like {{ match.response.like_num }}</button>
+  <p>
+    <small class="text-secondary">Likeするにはログインが必要です</small>
+  </p>
+  {% endif %}
+    
 </div>
 {% endblock comment %}
 

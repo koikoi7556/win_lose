@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     # boostrap
     'bootstrap4',
+    # accounts
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +133,6 @@ STATIC_ROOT = '/var/www/{}/static'.format(PROJECT_NAME)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/var/www/{}/media'.format(PROJECT_NAME)
 
+# 認証システム関係のリダイレクト先
+LOGIN_REDIRECT_URL = 'janken'
+LOGOUT_REDIRECT_URL = 'janken'
