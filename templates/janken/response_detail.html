@@ -15,15 +15,7 @@ Response View_Janken
 {% endblock title %}
 
 
-
-{% block message %}
-
-{% endblock message %}
-
-
-
 {% block comment %}
-<h1>View</h1>
 <div class="response">
   {# 負けた時 #}
   {% if response.result == -1 %}
@@ -58,7 +50,7 @@ Response View_Janken
     class="fas fa-hand-paper fa-3x btn btn-outline-primary flex-fill disabled"></button>
 </div>
 <ul class="list-group list-group-horizontal justify-content-end mt-3">
-  <a href="{% url 'janken:response_list' %}" class="list-group-item">一覧</a>
+  <a href="{% url 'janken:response_list' %}" class="list-group-item">My Responses</a>
   <a href="{% url 'janken:response_edit' response_id=response.pk %}" class="list-group-item">編集</a>
   <a href="{% url 'janken:response_remove' response_id=response.pk %}" class="list-group-item text-danger">削除</a>
 </ul>

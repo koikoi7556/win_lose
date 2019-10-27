@@ -15,4 +15,6 @@ urlpatterns = [
     path('response/<int:response_id>/remove/', views.ResponseRemoveView.as_view(), name='response_remove'),
     path('response/list/', views.ResponseListView.as_view(), name='response_list'),
     path('response/<int:response_id>/detail/', views.ResponseDetailView.as_view(), name='response_detail'),
+    path('match/list/', views.MatchListView.as_view(), name='match_list'),
+    path('match/<int:match_id>/detail/', views.MatchDetailView.as_view(), name='match_detail'),
 ]

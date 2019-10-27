@@ -189,11 +189,11 @@ class ResponseRemoveView(View):
     Responseデータを削除
     """
     def get(self, request, response_id, *args, **kwargs):
-        response = get_object_or_404(Response, pk=response_id)
+        response = get_object_or_404(Response, pk=response_id, author=request.user)
         return render(request, 'janken/response_confirm_delete.html', {'response': response})
 
     def post(self, request, response_id, *args, **kwargs):
-        response = get_object_or_404(Response, pk=response_id)
+        response = get_object_or_404(Response, pk=response_id, author=request.user)
         response.delete()
         return redirect('janken:response_list')
         
@@ -224,3 +224,37 @@ class ResponseDetailView(View):
 
 
 responseDetail = ResponseDetailView.as_view()
+
+
+class MatchListView(View):
+    """
+    Matchのリスト表示
+    """
+    def get(self, request, *args, **kwargs):
+        match_list = Match.objects.filter(user=request.user).order_by('-match_time')
+        return render(request, 'janken/match_list.html', {'match_list': match_list})
+
+
+matchList = MatchListView.as_view()
+
+
+class MatchDetailView(View):
+    """
+    Matchの詳細表示
+    """
+    def get(self, request, match_id, *args, **kwargs):
+        match = get_object_or_404(Match, pk=match_id)
+        # match.opponent_handを文字へ変換
+        if match.opponent_hand == 0:
+            opponent_hand = 'rock'
+        elif match.opponent_hand == 1:
+            opponent_hand = 'peace'
+        elif match.opponent_hand == 2:
+            opponent_hand = 'paper'
+        else:
+            opponent_hand == ''
+        is_like = Like.objects.filter(user=request.user, response=match.response).exists()        
+        return render(request, 'janken/match_detail.html', {'match': match, 'is_like': is_like, 'opponent_hand': opponent_hand})
+
+
+matchDetail = MatchDetailView.as_view()

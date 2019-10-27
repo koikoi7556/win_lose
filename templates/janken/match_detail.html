@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% load bootstrap4 %}
+
+{% block extra_css %}
+<style>
+
+</style>
+{% endblock extra_css %}
+
+
+{% block title %}
+Match View_Janken
+{% endblock title %}
+
+
+{% block comment %}
+<div class="response">
+  {# 負けた時 #}
+  {% if match.result == -1 %}
+  <h1>You lose.</h1>
+  {# あいこの時 #}
+  {% elif match.result == 0 %}
+  <h1>Draw.</h1>
+  {# 勝ったとき #}
+  {% elif match.result == 1 %}
+  <h1>You win.</h1>
+  {% endif %}
+  <div class="d-flex justify-content-center align-items-end">
+    <button type="button" class="fas fa-hand-{{opponent_hand}} btn btn-outline-dark fa-3x active "></button>
+    <img src="{{match.response.image_link}}" class="img-box rounded">
+  </div>
+  <div class="comment-box mt-3">
+    {{match.response.text|linebreaksbr}}
+  </div>
+  <button type="submit" class="btn btn-success mt-2 rounded-pill {% if is_like %}active{% endif %}" id="like">Like
+    {{ match.response.like_num }}</button>
+</div>
+
+{% endblock comment %}
+
+
+{% block content %}
+<div class="d-flex">
+  <button type="button" name="user_hand" value=0 class="fas fa-hand-rock fa-3x btn btn-outline-primary flex-fill 
+    {% if not match.user_hand == 0 %}disabled{% endif %}
+    "></button>
+  <button type="button" name="user_hand" value=1 class="fas fa-hand-peace fa-3x btn btn-outline-primary flex-fill
+    {% if not match.user_hand == 1 %}disabled{% endif %}
+    "></button>
+  <button type="button" name="user_hand" value=2 class="fas fa-hand-paper fa-3x btn btn-outline-primary flex-fill
+    {% if not match.user_hand == 2 %}disabled{% endif %}
+    "></button>
+</div>
+<ul class="list-group list-group-horizontal justify-content-end mt-3">
+  <a href="{% url 'janken:match_list' %}" class="list-group-item">My Matchs</a>
+</ul>
+<p class="text-right">
+  <small class="text-muted">対戦 {{ match.match_time|naturaltime }}</small>
+</p>
+{% endblock content %}
+
+
+{% block extra_js %}
+<script>
+  $("#like").click(function (event) {
+    event.preventDefault();
+    var like = $(this);
+    $.ajax({
+      url: "{% url 'janken:response_like' response_id=match.response.pk %}",
+      method: "post",
+      dataType: "json",
+    })
+      .done(function (data) {
+        if (data.is_like) {
+          like.removeClass("active");
+        } else {
+          like.addClass("active");
+        }
+        like.text("Like " + data.like_num);
+      })
+  });
+</script>
+{% endblock extra_js %}
