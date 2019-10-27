@@ -13,6 +13,7 @@ class Response(models.Model):
     updated_at = models.DateTimeField(verbose_name='更新日時', auto_now_add=True)
     created_at = models.DateTimeField(verbose_name='作成日時', default=timezone.now)
     like_num = models.IntegerField(default=0)
+    view_num = models.IntegerField(default=0)
 
     def __str__(self):
         return self.text[:40]

@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import View, CreateView
+from django.http.response import JsonResponse
 from .models import Match, Response, Like
 from .forms import ResponseForm, LoginForm
 
@@ -31,7 +32,9 @@ class ResultView(View):
             opponent_hand = 'paper'
         else:
             opponent_hand == ''
-        return render(request, 'janken/result.html',context={'match': match, 'opponent_hand': opponent_hand})
+        # そのレスポンスをLikeしているか
+        is_like = Like.objects.filter(user=request.user, response=match.response).exists()        
+        return render(request, 'janken/result.html',context={'match': match, 'opponent_hand': opponent_hand, 'is_like': is_like})
 
 
 result = ResultView.as_view()
@@ -103,14 +106,39 @@ class ProfileView(View):
 profile = ProfileView.as_view()
 
 
-class ResponseLikeView(View):
+class ResponseLikeAjaxView(View):
+    """
+    いいねが押されたときデータをAjaxで返す
+    """
     def post(self, request, response_id, *args, **kwargs):
-        request = get_object_or_404(Response, pk=response_id)
+        response = get_object_or_404(Response, pk=response_id)
+        is_like = Like.objects.filter(user=request.user, response=response).exists()
+        # unlike
+        if is_like:
+            liking = Like.objects.get(user=request.user, response=response)
+            liking.delete()
+            response.like_num -= 1
+            response.save()
+            data = {
+                'is_like': is_like,
+                'like_num': response.like_num
+            }
+            return JsonResponse(data)
+        # like
+        response.like_num += 1
+        response.save()
+        like = Like()
+        like.user = request.user
+        like.response = response
+        like.save()
+        data = {
+            'is_like': is_like,
+            'like_num': response.like_num
+        }
+        return JsonResponse(data) 
 
 
-
-
-responseLike = ResponseLikeView.as_view()
+responseLikeAjax = ResponseLikeAjaxView.as_view()
 
 
 class ResponseNewView(View):
@@ -128,7 +156,7 @@ class ResponseNewView(View):
         response = form.save(commit=False)
         response.author = request.user
         response.save()
-        return redirect('janken:index')
+        return redirect('janken:response_detail', response_id=response.pk)
 
 
 responseNew = ResponseNewView.as_view()
@@ -191,7 +219,8 @@ class ResponseDetailView(View):
     """
     def get(self, request, response_id, *args, **kwargs):
         response = get_object_or_404(Response, pk=response_id)
-        return render(request, 'janken/response_detail.html', {'response': response})
+        is_like = Like.objects.filter(user=request.user, response=response).exists()        
+        return render(request, 'janken/response_detail.html', {'response': response, 'is_like': is_like})
 
 
 responseDetail = ResponseDetailView.as_view()

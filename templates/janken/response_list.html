@@ -16,7 +16,7 @@ Response List_Janken
 
 
 {% block comment %}
-<h1>作成したResponse一覧</h1>
+<h1>MyResponse一覧</h1>
 {% endblock comment %}
 
 
@@ -44,7 +44,9 @@ Response List_Janken
         <a href="{% url 'janken:response_edit' response_id=response.pk %}" class="list-group-item">編集</a>
         <a href="{% url 'janken:response_remove' response_id=response.pk %}" class="list-group-item text-danger">削除</a>
       </ul>
-      <p class="card-text text-right">
+      <p class="card-text text-right mt-2">
+        <span class="text-success">Like {{ response.like_num }}</span>
+        <br>
         {% if  response.created_at < response.updated_at %}
         <small class="text-muted">更新 {{ response.updated_at|naturaltime }}, </small>
         {% endif %}

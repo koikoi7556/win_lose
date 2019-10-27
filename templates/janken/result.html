@@ -34,8 +34,8 @@ Result_Janken
   <div class="comment-box shadow-sm mt-3 py-1">
     {{match.response.text|linebreaksbr}}
   </div>
+  <button type="submit" class="btn btn-success mt-2 rounded-pill {% if is_like %}active{% endif %}" id="like">Like {{ match.response.like_num }}</button>
 </div>
-
 {% endblock comment %}
 
 
@@ -56,3 +56,27 @@ Result_Janken
   <a class="btn btn-link" href="{% url 'janken:index' %}" role="button">Once again</a>
 </div>
 {% endblock content %}
+
+
+{% block extra_js %}
+<script>
+  $("#like").click(function(event) {
+    event.preventDefault();
+    var like = $(this);
+    $.ajax({
+      url: "{% url 'janken:response_like' response_id=match.response.pk %}",
+      method: "post",
+      dataType: "json",
+    })
+    .done(function (data) {
+      if (data.is_like) {
+        like.removeClass("active");
+      } else {
+        like.addClass("active");
+      }
+      like.text("Like " + data.like_num);
+    })
+  });
+</script>
+{% endblock extra_js %}
+  

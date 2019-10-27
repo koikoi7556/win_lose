@@ -11,7 +11,7 @@
 
 
 {% block title %}
-Response Preview_Janken
+Response View_Janken
 {% endblock title %}
 
 
@@ -23,7 +23,7 @@ Response Preview_Janken
 
 
 {% block comment %}
-<h1>Preview</h1>
+<h1>View</h1>
 <div class="response">
   {# 負けた時 #}
   {% if response.result == -1 %}
@@ -42,7 +42,9 @@ Response Preview_Janken
   <div class="comment-box mt-3">
     {{response.text|linebreaksbr}}
   </div>
+  <button type="submit" class="btn btn-success mt-2 rounded-pill {% if is_like %}active{% endif %}" id="like">Like {{ response.like_num }}</button>
 </div>
+
 {% endblock comment %}
 
 
@@ -60,10 +62,33 @@ Response Preview_Janken
   <a href="{% url 'janken:response_edit' response_id=response.pk %}" class="list-group-item">編集</a>
   <a href="{% url 'janken:response_remove' response_id=response.pk %}" class="list-group-item text-danger">削除</a>
 </ul>
-<p class="card-text text-right">
+<p class="text-right">
   {% if  response.created_at < response.updated_at %}
   <small class="text-muted">更新 {{ response.updated_at|naturaltime }}, </small>
   {% endif %}
   <small class="text-muted">作成 {{ response.created_at|naturaltime }}</small>
 </p>
 {% endblock content %}
+
+
+{% block extra_js %}
+<script>
+  $("#like").click(function(event) {
+    event.preventDefault();
+    var like = $(this);
+    $.ajax({
+      url: "{% url 'janken:response_like' response_id=response.pk %}",
+      method: "post",
+      dataType: "json",
+    })
+    .done(function (data) {
+      if (data.is_like) {
+        like.removeClass("active");
+      } else {
+        like.addClass("active");
+      }
+      like.text("Like " + data.like_num);
+    })
+  });
+</script>
+{% endblock extra_js %}

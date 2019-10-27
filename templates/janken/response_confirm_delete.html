@@ -24,6 +24,7 @@ Response Comfirm_Janken
 <div class="comment-box mt-3">
   {{response.text|linebreaksbr}}
 </div>
+<button type="button" class="btn btn-success mt-2 rounded-pill">Like {{ response.like_num }}</button>
 {% endblock comment %}
 
 
