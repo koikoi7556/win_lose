@@ -55,6 +55,7 @@ Match View_Janken
 </div>
 <ul class="list-group list-group-horizontal justify-content-end mt-3">
   <a href="{% url 'janken:match_list' %}" class="list-group-item">My Matchs</a>
+  <a href="{% url 'janken:matchLike_list' %}" class="list-group-item">My Likes</a>
 </ul>
 <p class="text-right">
   <small class="text-muted">対戦 {{ match.match_time|naturaltime }}</small>

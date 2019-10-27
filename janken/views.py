@@ -167,12 +167,12 @@ class ResponseEditView(View):
     Responseデータを編集
     """
     def get(self, request, response_id, *args, **kwargs):
-        response = get_object_or_404(Response, pk=response_id)
+        response = get_object_or_404(Response, pk=response_id, author=request.user)
         form = ResponseForm(instance=response)    
         return render(request, 'janken/response_edit.html', {'form': form})
 
     def post(self, request, response_id, *args, **kwargs):
-        response = get_object_or_404(Response, pk=response_id)
+        response = get_object_or_404(Response, pk=response_id, author=request.user)
         form = ResponseForm(request.POST, instance=response)
         if not form.is_valid():
             render(request, 'janken/response_edit.html', {'form': form})
@@ -253,8 +253,25 @@ class MatchDetailView(View):
             opponent_hand = 'paper'
         else:
             opponent_hand == ''
-        is_like = Like.objects.filter(user=request.user, response=match.response).exists()        
+        is_like = Like.objects.filter(user=request.user, response=match.response).exists()
         return render(request, 'janken/match_detail.html', {'match': match, 'is_like': is_like, 'opponent_hand': opponent_hand})
 
 
 matchDetail = MatchDetailView.as_view()
+
+
+class MatchLikeListView(View):
+    """
+    MatchのLikeリスト表示
+    """
+    def get(self, request, *args, **kwargs):
+        # responseLikeList = Response.objects.filter(like__user=request.user)
+        # matchLikeList = []
+        # for responseLike in responseLikeList:
+        #     matchLike = Match.objects.get(user=request.user, response=responseLike)
+        #     matchLikeList.append(matchLike)
+        matchLike_list = Match.objects.filter(response__like__user=request.user)
+        return render(request, 'janken/matchLike_list.html', {'matchLike_list': matchLike_list})
+
+
+matchList = MatchListView.as_view()

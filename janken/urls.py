@@ -17,4 +17,5 @@ urlpatterns = [
     path('response/<int:response_id>/detail/', views.ResponseDetailView.as_view(), name='response_detail'),
     path('match/list/', views.MatchListView.as_view(), name='match_list'),
     path('match/<int:match_id>/detail/', views.MatchDetailView.as_view(), name='match_detail'),
+    path('match/likelist/', views.MatchLikeListView.as_view(), name='matchLike_list'),
 ]
