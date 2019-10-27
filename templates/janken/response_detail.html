@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% load bootstrap4 %}
+
+{% block extra_css %}
+<style>
+
+</style>
+{% endblock extra_css %}
+
+
+{% block title %}
+Response Preview_Janken
+{% endblock title %}
+
+
+
+{% block message %}
+
+{% endblock message %}
+
+
+
+{% block comment %}
+<h1>Preview</h1>
+<div class="response">
+  {# 負けた時 #}
+  {% if response.result == -1 %}
+  <h1>You lose.</h1>
+  {# あいこの時 #}
+  {% elif response.result == 0 %}
+  <h1>Draw.</h1>
+  {# 勝ったとき #}
+  {% elif response.result == 1 %}
+  <h1>You win.</h1>
+  {% endif %}
+  <div class="d-flex justify-content-center align-items-end">
+    <button type="button" class="fas fa-hand-rock btn btn-outline-dark fa-3x active "></button>
+    <img src="{{response.image_link}}" class="img-box rounded">
+  </div>
+  <div class="comment-box mt-3">
+    {{response.text|linebreaksbr}}
+  </div>
+</div>
+{% endblock comment %}
+
+
+{% block content %}
+<div class="d-flex">
+  <button type="button" name="user_hand" value=0
+    class="fas fa-hand-rock fa-3x btn btn-outline-primary flex-fill disabled"></button>
+  <button type="button" name="user_hand" value=1
+    class="fas fa-hand-peace fa-3x btn btn-outline-primary flex-fill disabled"></button>
+  <button type="button" name="user_hand" value=2
+    class="fas fa-hand-paper fa-3x btn btn-outline-primary flex-fill disabled"></button>
+</div>
+<ul class="list-group list-group-horizontal justify-content-end mt-3">
+  <a href="{% url 'janken:response_list' %}" class="list-group-item">一覧</a>
+  <a href="{% url 'janken:response_edit' response_id=response.pk %}" class="list-group-item">編集</a>
+  <a href="{% url 'janken:response_remove' response_id=response.pk %}" class="list-group-item text-danger">削除</a>
+</ul>
+<p class="card-text text-right">
+  {% if  response.created_at < response.updated_at %}
+  <small class="text-muted">更新 {{ response.updated_at|naturaltime }}, </small>
+  {% endif %}
+  <small class="text-muted">作成 {{ response.created_at|naturaltime }}</small>
+</p>
+{% endblock content %}

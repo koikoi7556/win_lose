@@ -10,8 +10,8 @@ class Response(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
     image_link = models.TextField(verbose_name='画像URL', max_length=2000)
     text = models.TextField(verbose_name='コメント', max_length=1000)
-    created_at = models.DateField(verbose_name='作成日時', default=timezone.now)
-    updated_at = models.DateField(verbose_name='更新日時', auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name='更新日時', auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name='作成日時', default=timezone.now)
     like_num = models.IntegerField(default=0)
 
     def __str__(self):
@@ -41,4 +41,4 @@ class Like(models.Model):
     """
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     response = models.ForeignKey(Response, on_delete=models.CASCADE)
-    created_at = models.DateField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)

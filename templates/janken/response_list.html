@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% load bootstrap4 %}
+
+{% block extra_css %}
+<style>
+
+</style>
+{% endblock extra_css %}
+
+
+{% block title %}
+Response List_Janken
+{% endblock title %}
+
+
+{% block comment %}
+<h1>作成したResponse一覧</h1>
+{% endblock comment %}
+
+
+{% block content %}
+<div class="card-columns">
+  {% for response in response_list %}
+  <div class="card">
+    <img src="{{ response.image_link }}" class="card-img-top">
+    <div class="card-body">
+      <p class="text-left">
+        {# 負けた時 #}
+        {% if response.result == -1 %}
+        You lose.
+        {# あいこの時 #}
+        {% elif response.result == 0 %}
+        Draw.
+        {# 勝ったとき #}
+        {% else%}
+        You win.
+        {% endif %}
+      </p>
+      <p class="card-text">{{ response.text }}</p>
+      <ul class="list-group list-group-horizontal justify-content-end">
+        <a href="{% url 'janken:response_detail' response_id=response.pk %}" class="list-group-item">プレビュー</a>
+        <a href="{% url 'janken:response_edit' response_id=response.pk %}" class="list-group-item">編集</a>
+        <a href="{% url 'janken:response_remove' response_id=response.pk %}" class="list-group-item text-danger">削除</a>
+      </ul>
+      <p class="card-text text-right">
+        {% if  response.created_at < response.updated_at %}
+        <small class="text-muted">更新 {{ response.updated_at|naturaltime }}, </small>
+        {% endif %}
+        <small class="text-muted">作成 {{ response.created_at|naturaltime }}</small>
+      </p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock content %}

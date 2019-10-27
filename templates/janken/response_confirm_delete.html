@@ -34,9 +34,10 @@ Response Comfirm_Janken
   <button type="button" name="user_hand" value=2 class="fas fa-hand-paper fa-3x btn btn-outline-primary flex-fill disabled"></button>
 </div>
 
-<div>
+<div class="text-right mt-3">
   <form method="post">
-    <button type="submit" class="btn btn-default">はい</button>
+    {% csrf_token %}
+    <button type="submit" class="btn btn-secondary">はい</button>
   </form>
 </div>
 {% endblock content %}

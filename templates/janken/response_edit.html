@@ -16,7 +16,7 @@ Response Edit_Janken
 
 
 {% block comment %}
-  <h1>Responseを作成</h1>
+  <h1>Response</h1>
 {% endblock comment %}
 
 
@@ -24,6 +24,8 @@ Response Edit_Janken
 <form method="post" class="post-form">
   {% csrf_token %}
   {% bootstrap_form form %}
-  <button type="submit" class="save btn btn-default">保存</button>
+  <div class="text-right">
+    <button type="submit" class="save btn btn-primary">保存</button>
+  </div>
 </form>
 {% endblock content %}

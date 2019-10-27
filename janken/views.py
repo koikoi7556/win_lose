@@ -104,7 +104,7 @@ profile = ProfileView.as_view()
 
 
 class ResponseLikeView(View):
-    def post(self, request, response_id,*args, **kwargs):
+    def post(self, request, response_id, *args, **kwargs):
         request = get_object_or_404(Response, pk=response_id)
 
 
@@ -136,19 +136,21 @@ responseNew = ResponseNewView.as_view()
 
 class ResponseEditView(View):
     """
-    Responseデータを作成
+    Responseデータを編集
     """
-    def get(self, request, *args, **kwargs):
-        return render(request, 'janken/response_edit.html', {'form': ResponseForm()})
+    def get(self, request, response_id, *args, **kwargs):
+        response = get_object_or_404(Response, pk=response_id)
+        form = ResponseForm(instance=response)    
+        return render(request, 'janken/response_edit.html', {'form': form})
 
     def post(self, request, response_id, *args, **kwargs):
         response = get_object_or_404(Response, pk=response_id)
         form = ResponseForm(request.POST, instance=response)
         if not form.is_valid():
-            render(request, 'janken/response_edit.html', {'form': ResponseForm()})
+            render(request, 'janken/response_edit.html', {'form': form})
         
         response.save()
-        return redirect('janken:index')
+        return redirect('janken:response_detail', response_id=response.pk)
 
 
 responseEdit = ResponseEditView.as_view()
@@ -160,12 +162,36 @@ class ResponseRemoveView(View):
     """
     def get(self, request, response_id, *args, **kwargs):
         response = get_object_or_404(Response, pk=response_id)
-        render(request, 'janken/response_confirm_delete.html', {'response': response})
+        return render(request, 'janken/response_confirm_delete.html', {'response': response})
 
     def post(self, request, response_id, *args, **kwargs):
         response = get_object_or_404(Response, pk=response_id)
         response.delete()
-        return redirect('janken:index')
+        return redirect('janken:response_list')
         
 
 responseRemove = ResponseRemoveView.as_view()
+
+
+class ResponseListView(View):
+    """
+    Responseのリスト表示
+    """
+    def get(self, request, *args, **kwargs):
+        response_list = Response.objects.filter(author=request.user).order_by('-created_at')
+        return render(request, 'janken/response_list.html', {'response_list': response_list})
+
+
+responseList = ResponseListView.as_view()
+
+
+class ResponseDetailView(View):
+    """
+    Responseの詳細表示
+    """
+    def get(self, request, response_id, *args, **kwargs):
+        response = get_object_or_404(Response, pk=response_id)
+        return render(request, 'janken/response_detail.html', {'response': response})
+
+
+responseDetail = ResponseDetailView.as_view()
