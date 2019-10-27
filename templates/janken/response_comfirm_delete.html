@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+
+{% block extra_css %}
+<style>
+
+</style>
+{% endblock extra_css %}
+
+
+{% block title %}
+Response Comfirm_Janken
+{% endblock title %}
+
+
+{% block comment %}
+<h1>こちらを削除してもよろしいですか?</h1>
+<div class="d-flex justify-content-center align-items-end">
+  <button type="button" class="fas fa-hand-rock btn btn-outline-dark fa-3x active "></button>
+  <img src="{{response.image_link}}" class="img-box rounded">
+</div>
+<div class="comment-box mt-3">
+  {{response.text|linebreaksbr}}
+</div>
+{% endblock comment %}
+
+
+{% block content %}
+<div class="d-flex">
+  <button type="button" name="user_hand" value=0 class="fas fa-hand-rock fa-3x btn btn-outline-primary flex-fill disabled"></button>
+  <button type="button" name="user_hand" value=1 class="fas fa-hand-peace fa-3x btn btn-outline-primary flex-fill disabled"></button>
+  <button type="button" name="user_hand" value=2 class="fas fa-hand-paper fa-3x btn btn-outline-primary flex-fill disabled"></button>
+</div>
+
+<div>
+  <form method="post">
+    <button type="submit" class="btn btn-default">はい</button>
+  </form>
+</div>
+{% endblock content %}

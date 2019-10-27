@@ -4,8 +4,9 @@ import random
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.views.generic import View
+from django.views.generic import View, CreateView
 from .models import Match, Response, Like
+from .forms import ResponseForm, LoginForm
 
 logeer = logging.getLogger(__name__)
 
@@ -55,6 +56,9 @@ class MatchView(View):
         return redirect('janken:result', pk=match.pk, )
 
 
+match = MatchView.as_view()
+
+
 def janken(user_hand):
     """user_handを引数に、(result, opponent_hand)を返す.それぞれの確率は等しい。
     
@@ -97,3 +101,71 @@ class ProfileView(View):
 
 
 profile = ProfileView.as_view()
+
+
+class ResponseLikeView(View):
+    def post(self, request, response_id,*args, **kwargs):
+        request = get_object_or_404(Response, pk=response_id)
+
+
+
+
+responseLike = ResponseLikeView.as_view()
+
+
+class ResponseNewView(View):
+    """
+    Responseデータを作成
+    """
+    def get(self, request, *args, **kwargs):
+        return render(request, 'janken/response_edit.html', {'form': ResponseForm()})
+
+    def post(self, request, *args, **kwargs):
+        form = ResponseForm(request.POST)
+        if not form.is_valid():
+            render(request, 'janken/response_edit.html', {'form': ResponseForm()})
+        
+        response = form.save(commit=False)
+        response.author = request.user
+        response.save()
+        return redirect('janken:index')
+
+
+responseNew = ResponseNewView.as_view()
+
+
+class ResponseEditView(View):
+    """
+    Responseデータを作成
+    """
+    def get(self, request, *args, **kwargs):
+        return render(request, 'janken/response_edit.html', {'form': ResponseForm()})
+
+    def post(self, request, response_id, *args, **kwargs):
+        response = get_object_or_404(Response, pk=response_id)
+        form = ResponseForm(request.POST, instance=response)
+        if not form.is_valid():
+            render(request, 'janken/response_edit.html', {'form': ResponseForm()})
+        
+        response.save()
+        return redirect('janken:index')
+
+
+responseEdit = ResponseEditView.as_view()
+
+
+class ResponseRemoveView(View):
+    """
+    Responseデータを削除
+    """
+    def get(self, request, response_id, *args, **kwargs):
+        response = get_object_or_404(Response, pk=response_id)
+        render(request, 'janken/response_confirm_delete.html', {'response': response})
+
+    def post(self, request, response_id, *args, **kwargs):
+        response = get_object_or_404(Response, pk=response_id)
+        response.delete()
+        return redirect('janken:index')
+        
+
+responseRemove = ResponseRemoveView.as_view()

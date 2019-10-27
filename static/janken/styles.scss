@@ -1,7 +1,9 @@
 .text-hack {
     font-family: "hack", "メイリオ", sans-serif;
   }
-
+h1 {
+    font-family: "hack", "メイリオ", sans-serif;    
+}
 // opacity設定
 .opacity-0 {
     opacity: 0; }
@@ -36,13 +38,23 @@
 .opacity-100 {
     opacity: 1; }
     
+// コメントボックス
 .comment-box {
-    background-color: rgba(150, 150, 150, 0.2);
+    background-color: rgba(255, 255, 255, 0.767);
     border-radius: 1rem;
 }
-
+// imgのサイズ指定
 .img-box {
     max-width: 80%;
+}
+
+// RESPONSEのアニメーション
+.response {
+    animation: 1.5s ease-out slidein;
+    @keyframes slidein {
+        0%{transform: translateX(100%);}
+        100%{transform:none;}
+    }
 }
 
 // じゃんけんボタンのデザイン

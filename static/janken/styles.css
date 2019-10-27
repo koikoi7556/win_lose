@@ -3,6 +3,10 @@
   font-family: "hack", "メイリオ", sans-serif;
 }
 
+h1 {
+  font-family: "hack", "メイリオ", sans-serif;
+}
+
 .opacity-0 {
   opacity: 0;
 }
@@ -48,12 +52,39 @@
 }
 
 .comment-box {
-  background-color: rgba(150, 150, 150, 0.2);
+  background-color: rgba(255, 255, 255, 0.767);
   border-radius: 1rem;
 }
 
 .img-box {
   max-width: 80%;
+}
+
+.response {
+  -webkit-animation: 1.5s ease-out slidein;
+          animation: 1.5s ease-out slidein;
+}
+
+@-webkit-keyframes slidein {
+  0% {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: none;
+            transform: none;
+  }
+}
+
+@keyframes slidein {
+  0% {
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: none;
+            transform: none;
+  }
 }
 
 .button-rock {

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% load bootstrap4 %}
+
+{% block extra_css %}
+<style>
+
+</style>
+{% endblock extra_css %}
+
+
+{% block title %}
+Response Edit_Janken
+{% endblock title %}
+
+
+{% block comment %}
+  <h1>Responseを作成</h1>
+{% endblock comment %}
+
+
+{% block content %}
+<form method="post" class="post-form">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <button type="submit" class="save btn btn-default">保存</button>
+</form>
+{% endblock content %}

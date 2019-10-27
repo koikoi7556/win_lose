@@ -2,9 +2,6 @@
 {% load static %}
 {% load humanize %}
 
-{# 引数の前処理 #}
-
-
 
 {% block extra_css %}
 <style>
@@ -19,27 +16,29 @@ Result_Janken
 
 
 {% block comment %}
-{# 負けた時 #}
-{% if match.result == -1 %}
-<h1>You lose.</h1>
-{# あいこの時 #}
-{% elif match.result == 0 %}
-<h1>Draw.</h1>
-{# 勝ったとき #}
-{% elif match.result == 1 %}
-<h1>You win.</h1>
-{% endif %}
-<div class="d-flex justify-content-center align-items-end">
-  <button type="button" class="fas fa-hand-{{opponent_hand}} btn btn-outline-dark fa-3x active "></button>
-  <img src="{{match.response.image_link}}" class="img-box rounded">
-</div>
-<div class="comment-box mt-3">
-  {{match.response.text|linebreaksbr}}
+<div class="response">
+  {# 負けた時 #}
+  {% if match.result == -1 %}
+  <h1>You lose.</h1>
+  {# あいこの時 #}
+  {% elif match.result == 0 %}
+  <h1>Draw.</h1>
+  {# 勝ったとき #}
+  {% elif match.result == 1 %}
+  <h1>You win.</h1>
+  {% endif %}
+  <div class="d-flex justify-content-center align-items-end">
+    <button type="button" class="fas fa-hand-{{opponent_hand}} btn btn-outline-dark fa-3x active "></button>
+    <img src="{{match.response.image_link}}" class="img-box rounded">
+  </div>
+  <div class="comment-box shadow-sm mt-3 py-1">
+    {{match.response.text|linebreaksbr}}
+  </div>
 </div>
 
 {% endblock comment %}
 
-{{user_hand}}
+
 {% block content %}
 <div class="d-flex">
   <button type="button" name="user_hand" value=0 class="fas fa-hand-rock fa-3x btn btn-outline-primary flex-fill 
