@@ -26,5 +26,5 @@ class ResponseForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['text'].widget.attrs = {'placeholder': '5文字以上'}
-        self.fields['image_link'].widget.attrs = {'placeholder': 'プレビューで画像が表示されるか確認してください'}
+        self.fields['text'].widget.attrs = {'placeholder': '5文字以上', 'rows': '5'}
+        self.fields['image_link'].widget.attrs = {'placeholder': 'プレビューで画像が表示されるか確認してください', 'rows': '4'}
