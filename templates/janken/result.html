@@ -40,7 +40,9 @@ Result_Janken
   {% else %}
   <button type="button" class="btn btn-success mt-2 rounded-pill disabled">Like {{ match.response.like_num }}</button>
   <p>
-    <small class="text-secondary">Likeするにはログインが必要です</small>
+    <small class="text-secondary">
+      Likeするには<a href="{% url 'login' %}"> ログイン </a>が必要です
+    </small>
   </p>
   {% endif %}
     

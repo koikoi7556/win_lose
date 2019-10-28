@@ -2,18 +2,6 @@ from django import forms
 from .models import Response, Match
 from django.contrib.auth.forms import UsernameField  
 
-class LoginForm(forms.Form):  
-    """ログイン画⾯⽤のフォーム"""  
-    username = UsernameField(  
-        label='ユーザー名',  
-        max_length=255,  
-    )  
-    password = forms.CharField(  
-        label='パスワード',  
-        strip=False,  
-        widget=forms.PasswordInput(render_value=True),  
-    ) 
-
 
 JANKEN = (
     (-1, '負けのとき'),

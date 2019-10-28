@@ -5,9 +5,10 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import View, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import JsonResponse
 from .models import Match, Response, Like
-from .forms import ResponseForm, LoginForm
+from .forms import ResponseForm
 
 logeer = logging.getLogger(__name__)
 
@@ -109,7 +110,7 @@ class ProfileView(View):
 profile = ProfileView.as_view()
 
 
-class ResponseLikeAjaxView(View):
+class ResponseLikeAjaxView(LoginRequiredMixin, View):
     """
     いいねが押されたときデータをAjaxで返す
     """
@@ -144,7 +145,7 @@ class ResponseLikeAjaxView(View):
 responseLikeAjax = ResponseLikeAjaxView.as_view()
 
 
-class ResponseNewView(View):
+class ResponseNewView(LoginRequiredMixin, View):
     """
     Responseデータを作成
     """
@@ -165,7 +166,7 @@ class ResponseNewView(View):
 responseNew = ResponseNewView.as_view()
 
 
-class ResponseEditView(View):
+class ResponseEditView(LoginRequiredMixin, View):
     """
     Responseデータを編集
     """
@@ -187,7 +188,7 @@ class ResponseEditView(View):
 responseEdit = ResponseEditView.as_view()
 
 
-class ResponseRemoveView(View):
+class ResponseRemoveView(LoginRequiredMixin, View):
     """
     Responseデータを削除
     """
@@ -204,7 +205,7 @@ class ResponseRemoveView(View):
 responseRemove = ResponseRemoveView.as_view()
 
 
-class ResponseListView(View):
+class ResponseListView(LoginRequiredMixin, View):
     """
     Responseのリスト表示
     """
@@ -216,7 +217,7 @@ class ResponseListView(View):
 responseList = ResponseListView.as_view()
 
 
-class ResponseDetailView(View):
+class ResponseDetailView(LoginRequiredMixin, View):
     """
     Responseの詳細表示
     """
@@ -229,7 +230,7 @@ class ResponseDetailView(View):
 responseDetail = ResponseDetailView.as_view()
 
 
-class MatchListView(View):
+class MatchListView(LoginRequiredMixin, View):
     """
     Matchのリスト表示
     """
@@ -241,7 +242,7 @@ class MatchListView(View):
 matchList = MatchListView.as_view()
 
 
-class MatchDetailView(View):
+class MatchDetailView(LoginRequiredMixin, View):
     """
     Matchの詳細表示
     """
@@ -263,7 +264,7 @@ class MatchDetailView(View):
 matchDetail = MatchDetailView.as_view()
 
 
-class MatchLikeListView(View):
+class MatchLikeListView(LoginRequiredMixin, View):
     """
     MatchのLikeリスト表示
     """
