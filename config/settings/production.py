@@ -20,10 +20,20 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 # }
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'win_lose',
+        'USER': 'name',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
+
 # ビューから例外が漏れてしまった場合にビュー何でのデータベースの保存更新削除がすべてロールバックされる。
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-
-
 # Logging
 LOGGING = {
     # バージョンは「1」固定
@@ -65,3 +75,9 @@ LOGGING = {
     },
 }
 
+
+# データベースの接続情報を環境変数から指定できるようにする（変数名は「DATABASE_URL」）。無料のHerokuデータベースを特に設定せずに使えるのはこの仕組みを利用しているから。
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
