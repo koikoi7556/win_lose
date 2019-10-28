@@ -8,7 +8,7 @@ class Response(models.Model):
     """
     result = models.IntegerField(verbose_name='janken結果')
     author = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True)
-    image_link = models.TextField(verbose_name='画像URL', max_length=2000)
+    image_link = models.TextField(verbose_name='画像URL', max_length=2000, blank=True, null=True)
     text = models.TextField(verbose_name='コメント', max_length=1000)
     updated_at = models.DateTimeField(verbose_name='更新日時', auto_now_add=True)
     created_at = models.DateTimeField(verbose_name='作成日時', default=timezone.now)
