@@ -18,9 +18,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+import os
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(os.environ['ADMIN_URL'], admin.site.urls),
     path('', RedirectView.as_view(url='/janken/'), name='janken'),
     path('janken/', include('janken.urls')),
     path('accounts/', include('accounts.urls')),
