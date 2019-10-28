@@ -15,9 +15,16 @@ class ResponseForm(forms.ModelForm):
         model = Response
         fields = ['result', 'image_link', 'text']
         widgets = {
-            'result': forms.Select(choices=JANKEN)
+            'result': forms.Select(choices=JANKEN),
         }
-        
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.fields['result']
+
+    def clean_text(self):
+        text = self.cleaned_data['text']  
+        if len(text) < 5:
+            raise forms.ValidationError('%(min_length)s 文字以上で入力してください', params={'min_length': 5})
+        return text
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs = {'placeholder': '5文字以上'}
+        self.fields['image_link'].widget.attrs = {'placeholder': 'プレビューで画像が表示されるか確認してください'}

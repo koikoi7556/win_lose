@@ -16,7 +16,20 @@ Response Edit_Janken
 
 
 {% block comment %}
-  <h1>Response</h1>
+<h1 id="title">Response</h1>
+
+<div class="response d-none" id="response">
+  <h1 id="result">Draw.</h1>
+  <div class="d-flex justify-content-center align-items-end">
+    <button type="button" class="fas fa-hand-rock btn btn-outline-dark fa-3x active "></button>
+    <img src="" id="img" class="img-box rounded">
+
+  </div>
+  <div class="comment-box mt-3" id="comment">
+  </div>
+  <button type="button" class="btn btn-success mt-2 rounded-pill" id="like">Like 0</button>
+</div>
+
 {% endblock comment %}
 
 
@@ -25,7 +38,33 @@ Response Edit_Janken
   {% csrf_token %}
   {% bootstrap_form form %}
   <div class="text-right">
+    <a href="#" class="btn btn-primary" id="preview">プレビュー</a>
     <button type="submit" class="btn btn-primary">保存</button>
   </div>
 </form>
+
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  $("#preview").click(function() {
+    // animateで移動します
+    //$('body').animate({scrollTop: 0}, 'slow');
+
+    var img_link = $('#id_image_link');
+    var result = $('#id_result');
+    var comment = $('#id_text');
+    $('#title').addClass("d-none");
+    $('#response').removeClass("d-none");
+    if (result.val() == -1) {
+      $('#result').text('You lose.');
+    } else if (result.val() == 0) {
+      $('#result').text('Draw');
+    } else {
+      $('#result').text('You Win.');
+    }
+    $('#img').attr("src", img_link.val());
+    $('#comment').text(comment.val())
+  });
+</script>
+{% endblock extra_js %}

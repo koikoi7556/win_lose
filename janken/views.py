@@ -155,7 +155,7 @@ class ResponseNewView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         form = ResponseForm(request.POST)
         if not form.is_valid():
-            render(request, 'janken/response_edit.html', {'form': ResponseForm()})
+            return render(request, 'janken/response_edit.html', {'form': form})
         
         response = form.save(commit=False)
         response.author = request.user
