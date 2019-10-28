@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# ここが少し下に下がってるので、デフォを修正
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # ファイル名を取得
 PROJECT_NAME = os.path.basename(BASE_DIR)
@@ -127,11 +128,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # 静的ファイルの配信元。collestatic コマンドでのコピー先。DEBUG=falseのとき必要。
 # STATICFILES_DIRとは別ディレクトリをしてする必要がある。
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfolder')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'mediafolder')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafolder')
 
 # 認証システム関係のリダイレクト先
 LOGIN_REDIRECT_URL = 'janken'
