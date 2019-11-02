@@ -17,13 +17,12 @@ Result_Janken
 
 {% block comment %}
 <div class="response">
-  {# 負けた時 #}
+  {# loginユーザーのとき #}
+  {% if user.is_authenticated %}
   {% if match.result == -1 %}
   <h1>You lose.</h1>
-  {# あいこの時 #}
   {% elif match.result == 0 %}
   <h1>Draw.</h1>
-  {# 勝ったとき #}
   {% elif match.result == 1 %}
   <h1>You win.</h1>
   {% endif %}
@@ -34,44 +33,63 @@ Result_Janken
   <div class="comment-box mt-3">
     {{match.response.text|linebreaksbr}}
   </div>
-  
-  {% if user.is_authenticated %}
-  <button type="submit" class="btn btn-success mt-2 rounded-pill {% if is_like %}active{% endif %}" id="like">Like {{ match.response.like_num }}</button>
+  <button type="button" class="btn btn-success mt-2 rounded-pill {% if is_like %}active{% endif %}" id="like">Like
+    {{ match.response.like_num }}</button>
+
+  {# guestユーザーのとき #}
   {% else %}
-  <button type="button" class="btn btn-success mt-2 rounded-pill disabled">Like {{ match.response.like_num }}</button>
+  {% if result == -1 %}
+  <h1>You lose.</h1>
+  {% elif result == 0 %}
+  <h1>Draw.</h1>
+  {% elif result == 1 %}
+  <h1>You win.</h1>
+  {% endif %}
+  <div class="d-flex justify-content-center align-items-end">
+    <button type="button" class="fas fa-hand-{{opponent_hand}} btn btn-outline-dark fa-3x active "></button>
+    <img src="{{response.image_link}}" class="img-box rounded">
+  </div>
+  <div class="comment-box mt-3">
+    {{response.text|linebreaksbr}}
+  </div>
+  <button type="button" class="btn btn-success mt-2 rounded-pill disabled">Like {{ response.like_num }}</button>
   <p>
     <small class="text-secondary">
       Likeするには<a href="{% url 'login' %}"> ログイン </a>が必要です
     </small>
   </p>
   {% endif %}
-    
+
 </div>
 {% endblock comment %}
 
 
 {% block content %}
-<div class="d-flex">
-  <button type="button" name="user_hand" value=0 class="fas fa-hand-rock fa-3x btn btn-outline-primary flex-fill 
-  {% if not match.user_hand == 0 %}disabled{% endif %}
-  "></button>
-  <button type="button" name="user_hand" value=1 class="fas fa-hand-peace fa-3x btn btn-outline-primary flex-fill
-  {% if not match.user_hand == 1 %}disabled{% endif %}
-  "></button>
-  <button type="button" name="user_hand" value=2 class="fas fa-hand-paper fa-3x btn btn-outline-primary flex-fill
-  {% if not match.user_hand == 2 %}disabled{% endif %}
-  "></button>
+<div class="btn-group btn-group-toggle w-100">
+  <label
+    class="btn btn-outline-primary fas fa-hand-rock fa-3x {% if not match.user_hand == 0 %}disabled{% else %}active{% endif %}">
+    <input type="radio" name="user_hand" autocomplete="off" value=0>
+  </label>
+  <label
+    class="btn btn-outline-primary fas fa-hand-peace fa-3x {% if not match.user_hand == 1 %}disabled{% else %}active{% endif %}">
+    <input type="radio" name="user_hand" autocomplete="off" value=1>
+  </label>
+  <label
+    class="btn btn-outline-primary fas fa-hand-paper fa-3x {% if not match.user_hand == 2 %}disabled{% else %}active{% endif %}">
+    <input type="radio" name="user_hand" autocomplete="off" value=2></label>
 </div>
 
-<div class="text-right">
-  <a class="btn btn-link" href="{% url 'janken:index' %}" role="button">Once again</a>
+<div class="text-center mt-3">
+  <a class="btn btn-primary rounded-pill" href="{% url 'janken:index' %}" role="button">Once again</a>
 </div>
 {% endblock content %}
 
 
 {% block extra_js %}
+{# loginユーザのときのみLike機能 #}
+{% if user.is_authenticated %}
 <script>
-  $("#like").click(function(event) {
+  $("#like").click(function (event) {
     event.preventDefault();
     var like = $(this);
     $.ajax({
@@ -79,15 +97,16 @@ Result_Janken
       method: "post",
       dataType: "json",
     })
-    .done(function (data) {
-      if (data.is_like) {
-        like.removeClass("active");
-      } else {
-        like.addClass("active");
-      }
-      like.text("Like " + data.like_num);
-    })
+      .done(function (data) {
+        if (data.is_like) {
+          like.removeClass("active");
+        } else {
+          like.addClass("active");
+        }
+        like.text("Like " + data.like_num);
+      })
   });
 </script>
+{% endif %}
 {% endblock extra_js %}
   

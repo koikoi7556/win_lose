@@ -29,13 +29,15 @@ Response Comfirm_Janken
 
 
 {% block content %}
-<div class="d-flex">
-  <button type="button" name="user_hand" value=0
-    class="fas fa-hand-rock fa-3x btn btn-outline-primary flex-fill disabled"></button>
-  <button type="button" name="user_hand" value=1
-    class="fas fa-hand-peace fa-3x btn btn-outline-primary flex-fill disabled"></button>
-  <button type="button" name="user_hand" value=2
-    class="fas fa-hand-paper fa-3x btn btn-outline-primary flex-fill disabled"></button>
+<div class="btn-group btn-group-toggle w-100">
+  <label class="btn btn-outline-primary fas fa-hand-rock fa-3x disabled">
+    <input type="radio" name="user_hand" autocomplete="off" value=0>
+  </label>
+  <label class="btn btn-outline-primary fas fa-hand-peace fa-3x disabled">
+    <input type="radio" name="user_hand" autocomplete="off" value=1>
+  </label>
+  <label class="btn btn-outline-primary fas fa-hand-paper fa-3x disabled">
+    <input type="radio" name="user_hand" autocomplete="off" value=2></label>
 </div>
 <p class="text-right">
   {% if  response.created_at < response.updated_at %}

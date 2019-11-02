@@ -45,22 +45,48 @@ result = ResultView.as_view()
 
 
 class MatchView(View):
+    """
+    LoginUserならばPOSTメソッドで処理し、DB保存リダリレクト。GuestUserならばGETメソッドで処理し、DB不保存レンダリング。
+    """
+
     def post(self, request, *args, **kwargs):
         user_hand = int(request.POST.get('user_hand'))
         result, opponent_hand = janken(user_hand)
         # レスポンスを結果からランダム選択
         response_list = Response.objects.filter(result=result)
         response = random.choice(response_list)
-        if request.user.is_active:
-            match = Match(user=request.user)
-        else:
-            match = Match()
-        match.response = response
-        match.user_hand = user_hand
-        match.opponent_hand = opponent_hand
-        match.result = result
+        match = Match(
+            user=request.user,
+            response = response,
+            user_hand = user_hand,
+            opponent_hand = opponent_hand,
+            result = result
+        )
         match.save()
         return redirect('janken:result', pk=match.pk, )
+
+    def get(self, request, *args, **kwargs):
+        user_hand = int(request.GET.get('user_hand'))
+        result, opponent_hand = janken(user_hand)
+        response_list = Response.objects.filter(result=result)
+        response = random.choice(response_list)
+        if opponent_hand == 0:
+            opponent_hand = 'rock'
+        elif opponent_hand == 1:
+            opponent_hand = 'peace'
+        elif opponent_hand == 2:
+            opponent_hand = 'paper'
+        else:
+            opponent_hand == ''
+        context = {
+            'user_hand': user_hand,
+            'result': result, 
+            'opponent_hand': opponent_hand,
+            'response': response,
+        }
+        return render(request, 'janken/result.html', context=context)
+
+
 
 
 match = MatchView.as_view()
