@@ -65,6 +65,8 @@ Result_Janken
 
 
 {% block content %}
+{# loginユーザーのとき #}
+{% if user.is_authenticated %}
 <div class="btn-group btn-group-toggle w-100">
   <label
     class="btn btn-outline-primary fas fa-hand-rock fa-3x {% if not match.user_hand == 0 %}disabled{% else %}active{% endif %}">
@@ -78,6 +80,24 @@ Result_Janken
     class="btn btn-outline-primary fas fa-hand-paper fa-3x {% if not match.user_hand == 2 %}disabled{% else %}active{% endif %}">
     <input type="radio" name="user_hand" autocomplete="off" value=2></label>
 </div>
+
+{# guestユーザーのとき #}
+{% else %}
+<div class="btn-group btn-group-toggle w-100">
+  <label
+    class="btn btn-outline-primary fas fa-hand-rock fa-3x {% if not user_hand == 0 %}disabled{% else %}active{% endif %}">
+    <input type="radio" name="user_hand" autocomplete="off" value=0>
+  </label>
+  <label
+    class="btn btn-outline-primary fas fa-hand-peace fa-3x {% if not user_hand == 1 %}disabled{% else %}active{% endif %}">
+    <input type="radio" name="user_hand" autocomplete="off" value=1>
+  </label>
+  <label
+    class="btn btn-outline-primary fas fa-hand-paper fa-3x {% if not user_hand == 2 %}disabled{% else %}active{% endif %}">
+    <input type="radio" name="user_hand" autocomplete="off" value=2></label>
+</div>
+{% endif %}
+
 
 <div class="text-center mt-3">
   <a class="btn btn-primary rounded-pill" href="{% url 'janken:index' %}" role="button">Once again</a>
@@ -109,4 +129,3 @@ Result_Janken
 </script>
 {% endif %}
 {% endblock extra_js %}
-  
