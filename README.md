@@ -1,6 +1,7 @@
 # Janken Simulation
 Djangoの基本を勉強したのでそのアウトプット。Herokuにデプロイ済み。[こちら](https://win-lose.herokuapp.com/janken/)  
-<small>※Heroku無料プランを使用しているためスリープ後の起動に20秒かかる。</small>
+<small>※Heroku無料プランを使用しているためスリープ後の起動に20秒かかる。</small>  
+<img src="https://user-images.githubusercontent.com/38366932/69771791-54fe2400-11d1-11ea-8356-be6be30f1b60.gif" width="300px">
 
 ## アプリの内容
 少し凝った、じゃんけんゲームを作った。ラジオボタンで自身の手を選択し、勝負する仕組みなっている。  
